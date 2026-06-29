@@ -37,7 +37,13 @@ npm run dev
 
 ### Admin user creation from the app
 
-Deploy the edge function:
+1. Run `supabase/02-multi-department.sql` in the SQL Editor (multi-department support).
+2. Add **`SUPABASE_SERVICE_ROLE_KEY`** to Vercel environment variables (Supabase → Settings → API → `service_role` secret).
+3. Redeploy on Vercel.
+
+For **local** Add User testing, use `npx vercel dev` instead of `npm run dev` (and add `SUPABASE_SERVICE_ROLE_KEY` to your local `.env`).
+
+Alternative: deploy the Supabase edge function instead:
 
 ```bash
 npx supabase login
@@ -69,6 +75,9 @@ git push -u origin main
 |----------|---------|
 | `VITE_SUPABASE_URL` | `https://xxxx.supabase.co` |
 | `VITE_SUPABASE_ANON_KEY` | your anon / publishable key |
+| `SUPABASE_SERVICE_ROLE_KEY` | your **service_role** key (server only — enables Add User) |
+
+> The service role key must **not** use the `VITE_` prefix. It stays on the server (Vercel API route) and is never sent to the browser.
 
 > Use the project URL **without** `/rest/v1/` at the end.
 

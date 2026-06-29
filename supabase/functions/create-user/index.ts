@@ -36,11 +36,14 @@ Deno.serve(async (req) => {
 
     if (profile?.role !== 'admin') throw new Error('Only admins can create users')
 
-    const { email, password, full_name, role, department_id } = await req.json()
+    const { email, password, full_name, role, department_ids } = await req.json()
 
     if (!email || !password || !full_name) {
       throw new Error('Email, password, and full name are required')
     }
+
+    const deptIds = Array.isArray(department_ids) ? department_ids : []
+    const primaryDept = deptIds[0] ?? null
 
     const { data, error } = await supabaseAdmin.auth.admin.createUser({
       email,
@@ -55,9 +58,18 @@ Deno.serve(async (req) => {
       .from('profiles')
       .update({
         role: role ?? 'employee',
-        department_id: department_id ?? null,
+        department_id: primaryDept,
       })
       .eq('id', data.user.id)
+
+    if (deptIds.length > 0) {
+      await supabaseAdmin.from('profile_departments').insert(
+        deptIds.map((department_id: string) => ({
+          profile_id: data.user.id,
+          department_id,
+        }))
+      )
+    }
 
     return new Response(JSON.stringify({ user: data.user }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
