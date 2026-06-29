@@ -1,13 +1,15 @@
 <template>
-  <div class="flex h-screen overflow-hidden bg-zinc-950">
+  <div class="mesh-bg flex h-screen overflow-hidden">
     <AppSidebar />
-    <div class="flex flex-1 flex-col overflow-hidden rounded-l-2xl app-bg">
-      <AppHeader :title="pageTitle" :subtitle="pageSubtitle">
-        <template #actions>
-          <slot name="header-actions" />
-        </template>
-      </AppHeader>
-      <main class="flex-1 overflow-y-auto p-8">
+    <div class="flex flex-1 flex-col overflow-hidden">
+      <div class="p-4 pb-0">
+        <AppHeader :title="pageTitle" :subtitle="pageSubtitle">
+          <template #actions>
+            <slot name="header-actions" />
+          </template>
+        </AppHeader>
+      </div>
+      <main class="flex-1 overflow-y-auto p-8 pt-6">
         <RouterView />
       </main>
     </div>
@@ -41,10 +43,7 @@ onMounted(async () => {
 
 const pageTitle = computed(() => {
   if (route.name === 'dashboard') return 'Overview'
-  if (route.name === 'board') {
-    const dept = departments.getById(route.params.departmentId)
-    return dept?.name ?? 'Board'
-  }
+  if (route.name === 'board') return departments.getById(route.params.departmentId)?.name ?? 'Board'
   if (route.name === 'work-item-detail') return 'Work Item'
   if (route.name === 'settings') return 'Settings'
   return 'OpsBoard'

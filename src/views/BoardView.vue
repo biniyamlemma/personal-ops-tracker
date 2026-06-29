@@ -11,8 +11,11 @@
     </div>
 
     <template v-else>
-      <div class="mb-6 flex justify-end">
-        <button class="btn-primary" @click="showCreate = true">
+      <div class="mb-4 flex items-center justify-between">
+        <p class="text-sm text-zinc-500 dark:text-zinc-400">
+          Drag cards between columns using the <span class="font-medium text-zinc-600 dark:text-zinc-300">⋮⋮</span> handle
+        </p>
+        <button class="btn-primary shrink-0" @click="showCreate = true">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>

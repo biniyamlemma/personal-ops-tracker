@@ -1,14 +1,14 @@
 <template>
   <div
-    class="flex min-w-[272px] flex-1 flex-col rounded-2xl border border-zinc-200/80 border-t-[3px] dark:border-zinc-800"
+    class="card flex min-w-[272px] flex-1 flex-col overflow-hidden border-t-[3px]"
     :class="columnAccent(status)"
   >
-    <div class="flex items-center gap-2 px-4 py-3.5">
-      <span class="h-2 w-2 rounded-full" :class="columnDot(status)" />
-      <h3 class="flex-1 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+    <div class="flex items-center gap-2 px-4 py-4">
+      <span class="h-2.5 w-2.5 rounded-full shadow-sm" :class="columnDot(status)" />
+      <h3 class="flex-1 text-sm font-bold text-slate-700 dark:text-slate-200">
         {{ formatStatus(status) }}
       </h3>
-      <span class="rounded-lg bg-white/80 px-2 py-0.5 text-xs font-bold text-zinc-500 dark:bg-zinc-900/80 dark:text-zinc-400">
+      <span class="rounded-full bg-white/80 px-2.5 py-0.5 text-xs font-bold text-slate-500 shadow-sm dark:bg-slate-800/80 dark:text-slate-400">
         {{ localItems.length }}
       </span>
     </div>
@@ -17,8 +17,11 @@
       v-model="localItems"
       group="work-items"
       item-key="id"
-      class="flex min-h-[240px] flex-1 flex-col gap-2.5 px-3 pb-3"
-      ghost-class="opacity-40 rotate-1"
+      handle=".drag-handle"
+      :animation="220"
+      ghost-class="opacity-40 scale-[0.97]"
+      drag-class="rotate-1 shadow-2xl"
+      class="flex min-h-[300px] flex-1 flex-col gap-3 px-3 pb-4"
       @change="onDragChange"
     >
       <template #item="{ element }">
@@ -49,12 +52,16 @@ async function onDragChange(evt) {
   if (evt.added) {
     const item = evt.added.element
     if (item.status !== props.status) {
-      if (props.status === 'blocked') {
-        const reason = prompt('Why is this item blocked?')
-        if (!reason) { localItems.value = [...props.items]; return }
-        await workItems.updateStatus(item.id, props.status, reason)
-      } else {
-        await workItems.updateStatus(item.id, props.status)
+      try {
+        if (props.status === 'blocked') {
+          const reason = prompt('Why is this item blocked?')
+          if (!reason) { localItems.value = [...props.items]; return }
+          await workItems.updateStatus(item.id, props.status, reason)
+        } else {
+          await workItems.updateStatus(item.id, props.status)
+        }
+      } catch {
+        localItems.value = [...props.items]
       }
     }
   }
