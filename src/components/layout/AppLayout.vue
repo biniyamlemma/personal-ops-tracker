@@ -22,13 +22,11 @@ import { useRoute } from 'vue-router'
 import AppSidebar from './AppSidebar.vue'
 import AppHeader from './AppHeader.vue'
 import { useDepartmentsStore } from '../../stores/departments'
-import { useProfilesStore } from '../../stores/profiles'
 import { useWorkItemsStore } from '../../stores/workItems'
 import { useRealtime } from '../../composables/useRealtime'
 
 const route = useRoute()
 const departments = useDepartmentsStore()
-const profiles = useProfilesStore()
 const workItems = useWorkItemsStore()
 
 useRealtime()
@@ -36,7 +34,6 @@ useRealtime()
 onMounted(async () => {
   await Promise.all([
     departments.fetchDepartments(),
-    profiles.fetchProfiles(),
     workItems.fetchWorkItems(),
   ])
 })
@@ -44,14 +41,15 @@ onMounted(async () => {
 const pageTitle = computed(() => {
   if (route.name === 'dashboard') return 'Overview'
   if (route.name === 'board') return departments.getById(route.params.departmentId)?.name ?? 'Board'
-  if (route.name === 'work-item-detail') return 'Work Item'
+  if (route.name === 'work-item-detail') return 'Item'
   if (route.name === 'settings') return 'Settings'
-  return 'OpsBoard'
+  return 'My Ops'
 })
 
 const pageSubtitle = computed(() => {
-  if (route.name === 'dashboard') return 'What is happening across the company right now'
-  if (route.name === 'board') return 'Drag work items between columns to update status'
+  if (route.name === 'dashboard') return 'What you are working on right now'
+  if (route.name === 'board') return 'Drag items between columns to update status'
+  if (route.name === 'settings') return 'Manage your areas'
   return null
 })
 </script>

@@ -11,9 +11,9 @@
       </svg>
     </div>
     <div v-if="showText">
-      <p class="font-semibold tracking-tight" :class="titleClass">OpsBoard</p>
+      <p class="font-semibold tracking-tight" :class="titleClass">My Ops</p>
       <p v-if="showTagline" class="text-xs" :class="light ? 'text-zinc-400' : 'text-zinc-500 dark:text-zinc-400'">
-        Company operations
+        Personal ops tracker
       </p>
     </div>
   </div>

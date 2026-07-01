@@ -7,14 +7,14 @@
 
       <div class="max-w-md">
         <h2 class="text-3xl font-semibold leading-tight tracking-tight text-white">
-          Company operations,<br />organized.
+          Your life and work,<br />in one board.
         </h2>
         <p class="mt-4 text-base leading-relaxed text-zinc-400">
-          Track work across departments — planned, in progress, blocked, and done.
+          Track what you're working on across your own areas — planned, in progress, blocked, and done.
         </p>
       </div>
 
-      <p class="text-sm text-zinc-500">OpsBoard</p>
+      <p class="text-sm text-zinc-500">My Ops</p>
     </div>
 
     <div class="flex flex-1 flex-col items-center justify-center p-8">
@@ -25,13 +25,13 @@
       <div class="card w-full max-w-sm p-8">
         <div class="mb-6">
           <h1 class="text-xl font-semibold text-zinc-900 dark:text-zinc-50">Sign in</h1>
-          <p class="mt-1 text-sm text-zinc-500">Enter your credentials to continue</p>
+          <p class="mt-1 text-sm text-zinc-500">Your personal ops board</p>
         </div>
 
         <form class="space-y-4" @submit.prevent="handleSubmit">
           <div>
             <label class="label">Email</label>
-            <input v-model="email" type="email" required autocomplete="email" class="input-field" placeholder="you@company.com" />
+            <input v-model="email" type="email" required autocomplete="email" class="input-field" placeholder="you@email.com" />
           </div>
           <div>
             <label class="label">Password</label>

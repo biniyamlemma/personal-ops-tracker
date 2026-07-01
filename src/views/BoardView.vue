@@ -1,13 +1,13 @@
 <template>
   <div>
     <div v-if="!departmentId" class="flex flex-col items-center justify-center py-24 text-center">
-      <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-zinc-800">
+      <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800">
         <svg class="h-7 w-7 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7" />
         </svg>
       </div>
-      <p class="font-medium text-zinc-600 dark:text-zinc-400">Select a department</p>
-      <p class="mt-1 text-sm text-zinc-400">Choose a department from the sidebar to open its board</p>
+      <p class="font-medium text-zinc-600 dark:text-zinc-400">Select an area</p>
+      <p class="mt-1 text-sm text-zinc-400">Choose an area from the sidebar to open its board</p>
     </div>
 
     <template v-else>
@@ -16,14 +16,14 @@
           <p class="text-sm text-zinc-600 dark:text-zinc-400">
             <span class="font-medium text-zinc-900 dark:text-zinc-200">Drag</span> cards between columns
             <span class="mx-1 text-zinc-300 dark:text-zinc-600">·</span>
-            or use <span class="font-medium text-zinc-900 dark:text-zinc-200">Move to</span> buttons on each card
+            or use <span class="font-medium text-zinc-900 dark:text-zinc-200">Move to</span> on each card
           </p>
         </div>
         <button class="btn-primary shrink-0" @click="showCreate = true">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
-          New Work Item
+          New item
         </button>
       </div>
 

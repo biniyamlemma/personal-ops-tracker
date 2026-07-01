@@ -33,7 +33,6 @@ const routes = [
         path: 'settings',
         name: 'settings',
         component: () => import('../views/SettingsView.vue'),
-        meta: { requiresAdmin: true },
       },
     ],
   },
@@ -58,10 +57,6 @@ router.beforeEach(async (to) => {
   }
 
   if (to.meta.guest && auth.user) {
-    return { name: 'dashboard' }
-  }
-
-  if (to.meta.requiresAdmin && auth.profile?.role !== 'admin') {
     return { name: 'dashboard' }
   }
 })

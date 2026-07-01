@@ -1,19 +1,18 @@
-# OpsBoard
+# My Ops
 
-**Company operations at a glance.** A lightweight internal board that answers: *"What is happening in the company right now?"*
+**Your personal operations board.** Track what you're working on across your own life areas — planned, in progress, blocked, and done.
 
 Built with Vue 3, Vite, TailwindCSS, Pinia, Vue Router, Vue Draggable, and Supabase.
 
 ## Features
 
-- Department boards with four columns: Planned, In Progress, Blocked, Completed
-- Drag-and-drop work items with instant database sync
-- Realtime updates for all connected users
-- Dashboard with blocked-item highlights and department summaries
-- Work item details with comments and activity timeline
-- Role-based access: Admin, Manager, Employee
+- Personal **areas** (Work, Personal, Home, Money, Health, Projects — or your own)
+- Kanban board per area with four columns: Planned, In Progress, Blocked, Completed
+- Drag-and-drop items with instant sync
+- Dashboard with blocked-item highlights and area summaries
+- Item details with notes and activity timeline
 - Dark mode support
-- Admin settings for departments and team members
+- Settings to manage your areas
 
 ## Tech Stack
 
@@ -30,76 +29,24 @@ npm run dev
 ### Supabase setup
 
 1. Create a project at [supabase.com](https://supabase.com)
-2. Run `supabase/01-setup.sql` in the **SQL Editor**
-3. **Authentication → Providers → Email** → disable **Enable sign ups**
-4. **Authentication → Users** → add your admin user
-5. Run `supabase/seed-admin.sql` (update the email first)
+2. Run SQL files in order in the **SQL Editor**:
+   - `supabase/01-setup.sql`
+   - `supabase/02-multi-department.sql`
+   - `supabase/03-personal-ops.sql`
+3. **Authentication → Providers → Email** → disable **Enable sign ups** (optional — create your account in Supabase dashboard)
+4. **Authentication → Users** → add your user
+5. Run `supabase/seed-admin.sql` only if you need to fix profile role (optional)
 
-### Admin user creation from the app
+On first login, default areas are created automatically.
 
-1. Run `supabase/02-multi-department.sql` in the SQL Editor (multi-department support).
-2. Add **`SUPABASE_SERVICE_ROLE_KEY`** to Vercel environment variables (Supabase → Settings → API → `service_role` secret).
-3. Redeploy on Vercel.
-
-For **local** Add User testing, use `npx vercel dev` instead of `npm run dev` (and add `SUPABASE_SERVICE_ROLE_KEY` to your local `.env`).
-
-Alternative: deploy the Supabase edge function instead:
-
-```bash
-npx supabase login
-npx supabase link --project-ref YOUR_PROJECT_REF
-npx supabase functions deploy create-user
-```
-
-## Deploy to Vercel
-
-### 1. Push to GitHub
-
-```bash
-git init
-git add .
-git status          # confirm .env is NOT listed
-git commit -m "Initial commit: OpsBoard"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/company-ops-tracker.git
-git push -u origin main
-```
-
-### 2. Import on Vercel
-
-1. Go to [vercel.com/new](https://vercel.com/new) and import the repo
-2. Framework preset: **Vite** (auto-detected)
-3. Add **Environment Variables**:
+### Deploy to Vercel
 
 | Variable | Example |
 |----------|---------|
 | `VITE_SUPABASE_URL` | `https://xxxx.supabase.co` |
-| `VITE_SUPABASE_ANON_KEY` | your anon / publishable key |
-| `SUPABASE_SERVICE_ROLE_KEY` | your **service_role** key (server only — enables Add User) |
+| `VITE_SUPABASE_ANON_KEY` | your anon key |
 
-> The service role key must **not** use the `VITE_` prefix. It stays on the server (Vercel API route) and is never sent to the browser.
-
-> Use the project URL **without** `/rest/v1/` at the end.
-
-4. Click **Deploy**
-
-`vercel.json` is included for SPA routing (Vue Router).
-
-## Project Structure
-
-```
-src/
-├── components/   # UI (board, dashboard, layout, settings)
-├── composables/  # useRealtime
-├── lib/          # Supabase client, constants
-├── router/
-├── stores/       # Pinia
-└── views/
-supabase/
-├── 01-setup.sql       # Database schema (run first)
-├── seed-admin.sql     # Promote admin user
-└── functions/create-user/
-```
+`SUPABASE_SERVICE_ROLE_KEY` is no longer required (team user management removed).
 
 ## License
 

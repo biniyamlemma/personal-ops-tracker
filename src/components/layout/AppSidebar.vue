@@ -18,7 +18,7 @@
         Dashboard
       </RouterLink>
 
-      <p class="section-title mb-2 mt-8 px-3">Departments</p>
+      <p class="section-title mb-2 mt-8 px-3">Areas</p>
 
       <RouterLink
         v-for="dept in departments.departments"
@@ -39,9 +39,8 @@
 
     <div class="border-t border-zinc-200 p-4 dark:border-zinc-800">
       <RouterLink
-        v-if="auth.isAdmin"
         :to="{ name: 'settings' }"
-        class="mb-2 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium"
+        class="mb-2 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium"
         :class="linkClass('settings')"
       >
         <svg class="h-5 w-5 shrink-0 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">

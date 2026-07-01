@@ -91,7 +91,9 @@ export const useWorkItemsStore = defineStore('workItems', () => {
       .insert({
         ...item,
         created_by: auth.user.id,
+        user_id: auth.user.id,
         status: 'planned',
+        assigned_to: null,
       })
       .select()
       .single()
@@ -132,12 +134,8 @@ export const useWorkItemsStore = defineStore('workItems', () => {
     if (updates.status && existing && updates.status !== existing.status) {
       await logActivity(
         id,
-        `${auth.profile?.full_name} moved "${existing.title}" from ${formatStatus(existing.status)} to ${formatStatus(updates.status)}.`
+        `Moved "${existing.title}" from ${formatStatus(existing.status)} to ${formatStatus(updates.status)}.`
       )
-    }
-
-    if (updates.assigned_to !== undefined && existing && updates.assigned_to !== existing.assigned_to) {
-      await logActivity(id, `Assigned work item "${existing.title}"`)
     }
 
     if (updates.status === 'completed') {

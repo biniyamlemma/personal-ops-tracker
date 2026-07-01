@@ -1,15 +1,15 @@
 <template>
   <div class="card p-5">
     <div class="mb-4 flex items-center justify-between">
-      <h3 class="font-semibold text-zinc-900 dark:text-white">Departments</h3>
+      <h3 class="font-medium text-zinc-900 dark:text-zinc-50">Areas</h3>
       <button class="btn-primary !py-1.5 !text-xs" @click="showAdd = true">
-        Add Department
+        Add area
       </button>
     </div>
 
     <div v-if="showAdd" class="mb-4 flex gap-2">
-      <input v-model="newName" type="text" placeholder="Department name" class="input-field flex-1" @keyup.enter="addDepartment" />
-      <button class="btn-primary" @click="addDepartment">Save</button>
+      <input v-model="newName" type="text" placeholder="Area name" class="input-field flex-1" @keyup.enter="addArea" />
+      <button class="btn-primary" @click="addArea">Save</button>
       <button class="btn-secondary" @click="showAdd = false">Cancel</button>
     </div>
 
@@ -17,25 +17,25 @@
       <div
         v-for="dept in departments.departments"
         :key="dept.id"
-        class="flex items-center justify-between rounded-xl border border-zinc-200 px-4 py-3 dark:border-zinc-800"
+        class="flex items-center justify-between rounded-lg border border-zinc-200 px-4 py-3 dark:border-zinc-800"
       >
         <template v-if="editingId === dept.id">
           <input
             v-model="editName"
             type="text"
-            class="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm dark:border-slate-600 dark:bg-slate-800"
+            class="input-field flex-1"
             @keyup.enter="saveEdit(dept.id)"
           />
           <div class="ml-2 flex gap-1">
-            <button class="rounded px-2 py-1 text-xs text-brand-600 hover:bg-brand-50" @click="saveEdit(dept.id)">Save</button>
-            <button class="rounded px-2 py-1 text-xs text-slate-500 hover:bg-slate-100" @click="editingId = null">Cancel</button>
+            <button class="btn-primary !px-2 !py-1 !text-xs" @click="saveEdit(dept.id)">Save</button>
+            <button class="btn-secondary !px-2 !py-1 !text-xs" @click="editingId = null">Cancel</button>
           </div>
         </template>
         <template v-else>
           <span class="text-sm font-medium">{{ dept.name }}</span>
           <div class="flex gap-1">
-            <button class="rounded px-2 py-1 text-xs text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" @click="startEdit(dept)">Edit</button>
-            <button class="rounded px-2 py-1 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20" @click="removeDepartment(dept.id)">Delete</button>
+            <button class="rounded px-2 py-1 text-xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800" @click="startEdit(dept)">Edit</button>
+            <button class="rounded px-2 py-1 text-xs text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20" @click="removeArea(dept.id)">Delete</button>
           </div>
         </template>
       </div>
@@ -57,7 +57,7 @@ const editingId = ref(null)
 const editName = ref('')
 const error = ref('')
 
-async function addDepartment() {
+async function addArea() {
   if (!newName.value.trim()) return
   error.value = ''
   try {
@@ -84,8 +84,8 @@ async function saveEdit(id) {
   }
 }
 
-async function removeDepartment(id) {
-  if (!confirm('Delete this department? All work items in it will also be deleted.')) return
+async function removeArea(id) {
+  if (!confirm('Delete this area? All items in it will also be deleted.')) return
   try {
     await departments.deleteDepartment(id)
   } catch (e) {
