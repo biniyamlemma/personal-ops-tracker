@@ -58,7 +58,10 @@ On first login, default areas are created automatically.
 4. In **Settings** inside the app, set your default notification email and timezone
 5. Create reminders under **Reminders** in the sidebar
 
-The Vercel cron runs every 5 minutes on Pro. On Hobby, cron is limited to once per day — use [cron-job.org](https://cron-job.org) to ping `https://your-app.vercel.app/api/process-reminders` with header `Authorization: Bearer YOUR_CRON_SECRET` for more frequent checks.
+On Vercel Hobby, use [cron-job.org](https://cron-job.org) (free) to call your reminder endpoint every 5–15 minutes:
+
+- **URL:** `https://your-app.vercel.app/api/process-reminders`
+- **Header:** `Authorization: Bearer YOUR_CRON_SECRET`
 
 ### Deploy to Vercel
 
