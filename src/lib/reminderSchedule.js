@@ -37,13 +37,37 @@ export function zonedTimeToUtc(date, time, timezone) {
   return new Date(guess)
 }
 
-export function buildReminderSchedule({
-  date,
-  time,
-  timezone,
-  recurrence,
-  recurrenceDay,
-}) {
+/** Derive recurrence_day from the selected calendar date. */
+export function recurrenceDayFromDate(date, recurrence) {
+  const [year, month, day] = date.split('-').map(Number)
+  if (recurrence === 'monthly') return day
+  if (recurrence === 'weekly') return new Date(year, month - 1, day).getDay()
+  return null
+}
+
+/** Format a UTC ISO timestamp as date/time inputs in a timezone. */
+export function formatReminderDateTime(iso, timezone) {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: timezone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
+  const parts = Object.fromEntries(
+    formatter.formatToParts(new Date(iso)).map((p) => [p.type, p.value])
+  )
+  const hour = String(Number(parts.hour) % 24).padStart(2, '0')
+  return {
+    date: `${parts.year}-${parts.month}-${parts.day}`,
+    time: `${hour}:${parts.minute}`,
+  }
+}
+
+export function buildReminderSchedule({ date, time, timezone, recurrence }) {
+  const recurrenceDay = recurrenceDayFromDate(date, recurrence)
   const remindAt = zonedTimeToUtc(date, time, timezone)
   let nextRunAt = new Date(remindAt)
   const now = new Date()
@@ -55,7 +79,7 @@ export function buildReminderSchedule({
   return {
     remind_at: remindAt.toISOString(),
     next_run_at: nextRunAt.toISOString(),
-    recurrence_day: recurrence === 'weekly' || recurrence === 'monthly' ? recurrenceDay : null,
+    recurrence_day: recurrenceDay,
   }
 }
 
@@ -97,14 +121,4 @@ export const RECURRENCE_OPTIONS = [
   { value: 'daily', label: 'Daily' },
   { value: 'weekly', label: 'Weekly' },
   { value: 'monthly', label: 'Monthly' },
-]
-
-export const WEEKDAY_OPTIONS = [
-  { value: 0, label: 'Sunday' },
-  { value: 1, label: 'Monday' },
-  { value: 2, label: 'Tuesday' },
-  { value: 3, label: 'Wednesday' },
-  { value: 4, label: 'Thursday' },
-  { value: 5, label: 'Friday' },
-  { value: 6, label: 'Saturday' },
 ]

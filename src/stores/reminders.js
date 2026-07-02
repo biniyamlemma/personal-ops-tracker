@@ -4,6 +4,24 @@ import { supabase } from '../lib/supabase'
 import { useAuthStore } from './auth'
 import { buildReminderSchedule } from '../lib/reminderSchedule'
 
+function scheduleFields(payload) {
+  const schedule = buildReminderSchedule({
+    date: payload.date,
+    time: payload.time,
+    timezone: payload.timezone,
+    recurrence: payload.recurrence,
+  })
+  return {
+    title: payload.title,
+    message: payload.message || null,
+    email: payload.email,
+    recurrence: payload.recurrence,
+    remind_at: schedule.remind_at,
+    next_run_at: schedule.next_run_at,
+    recurrence_day: schedule.recurrence_day,
+  }
+}
+
 export const useRemindersStore = defineStore('reminders', () => {
   const reminders = ref([])
   const loading = ref(false)
@@ -22,26 +40,14 @@ export const useRemindersStore = defineStore('reminders', () => {
 
   async function createReminder(payload) {
     const auth = useAuthStore()
-    const schedule = buildReminderSchedule({
-      date: payload.date,
-      time: payload.time,
-      timezone: payload.timezone,
-      recurrence: payload.recurrence,
-      recurrenceDay: payload.recurrence_day,
-    })
+    const fields = scheduleFields(payload)
 
     const { data, error } = await supabase
       .from('reminders')
       .insert({
         user_id: auth.user.id,
         work_item_id: payload.work_item_id || null,
-        title: payload.title,
-        message: payload.message || null,
-        email: payload.email,
-        recurrence: payload.recurrence,
-        remind_at: schedule.remind_at,
-        next_run_at: schedule.next_run_at,
-        recurrence_day: schedule.recurrence_day,
+        ...fields,
         is_active: true,
       })
       .select()
@@ -64,7 +70,12 @@ export const useRemindersStore = defineStore('reminders', () => {
     if (error) throw error
     const idx = reminders.value.findIndex((r) => r.id === id)
     if (idx !== -1) reminders.value[idx] = data
+    reminders.value.sort((a, b) => new Date(a.next_run_at) - new Date(b.next_run_at))
     return data
+  }
+
+  async function saveReminder(id, payload) {
+    return updateReminder(id, scheduleFields(payload))
   }
 
   async function toggleActive(id) {
@@ -85,6 +96,7 @@ export const useRemindersStore = defineStore('reminders', () => {
     fetchReminders,
     createReminder,
     updateReminder,
+    saveReminder,
     toggleActive,
     deleteReminder,
   }

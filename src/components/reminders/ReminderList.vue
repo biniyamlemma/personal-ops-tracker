@@ -28,6 +28,12 @@
       <div class="flex shrink-0 gap-1">
         <button
           class="rounded px-2 py-1 text-xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          @click="emit('edit', reminder)"
+        >
+          Edit
+        </button>
+        <button
+          class="rounded px-2 py-1 text-xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           @click="reminders.toggleActive(reminder.id)"
         >
           {{ reminder.is_active ? 'Pause' : 'Resume' }}
@@ -52,6 +58,7 @@ import { format, parseISO } from 'date-fns'
 import { useRemindersStore } from '../../stores/reminders'
 import { RECURRENCE_OPTIONS } from '../../lib/reminderSchedule'
 
+const emit = defineEmits(['edit'])
 const reminders = useRemindersStore()
 
 function recurrenceLabel(value) {
