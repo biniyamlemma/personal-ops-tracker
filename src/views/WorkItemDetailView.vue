@@ -1,22 +1,21 @@
 <template>
   <div v-if="loading" class="py-16 text-center text-zinc-400">Loading...</div>
 
-  <div v-else-if="item" class="mx-auto max-w-4xl space-y-6">
-    <button class="btn-ghost !px-0" @click="$router.back()">
-      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
-      Back to board
-    </button>
-
-    <div class="flex justify-end">
-      <button class="btn-secondary !text-xs" @click="showReminder = true">
+  <div v-else-if="item" class="mx-auto max-w-4xl space-y-4 sm:space-y-6">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <button class="btn-ghost self-start !px-0" @click="$router.back()">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to board
+      </button>
+      <button class="btn-secondary w-full !text-xs sm:w-auto" @click="showReminder = true">
         Add reminder
       </button>
     </div>
 
     <div class="card overflow-hidden">
-      <div class="border-b border-zinc-100 bg-zinc-50/50 px-6 py-5 dark:border-zinc-800 dark:bg-zinc-900/30">
+      <div class="border-b border-zinc-100 bg-zinc-50/50 px-4 py-4 sm:px-6 sm:py-5 dark:border-zinc-800 dark:bg-zinc-900/30">
         <div class="flex flex-wrap items-start gap-3">
           <Badge :variant="statusVariant">{{ formatStatus(item.status) }}</Badge>
           <h2 class="w-full text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -39,7 +38,7 @@
         </div>
       </div>
 
-      <div class="px-6 py-5">
+      <div class="px-4 py-4 sm:px-6 sm:py-5">
         <StatusPipeline
           :current-status="item.status"
           :item-title="item.title"
@@ -47,12 +46,12 @@
         />
       </div>
 
-      <div v-if="item.status === 'blocked' && item.block_reason" class="mx-6 mb-5 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-900/40 dark:bg-red-950/30">
+      <div v-if="item.status === 'blocked' && item.block_reason" class="mx-4 mb-4 rounded-lg border border-red-200 bg-red-50 p-4 sm:mx-6 sm:mb-5 dark:border-red-900/40 dark:bg-red-950/30">
         <p class="text-xs font-medium uppercase tracking-wide text-red-600 dark:text-red-400">Block reason</p>
         <p class="mt-1 text-sm text-red-700 dark:text-red-300">{{ item.block_reason }}</p>
       </div>
 
-      <div v-if="item.description" class="border-t border-zinc-100 px-6 py-5 dark:border-zinc-800">
+      <div v-if="item.description" class="border-t border-zinc-100 px-4 py-4 sm:px-6 sm:py-5 dark:border-zinc-800">
         <h3 class="mb-2 text-sm font-medium text-zinc-900 dark:text-zinc-50">Description</h3>
         <p class="whitespace-pre-wrap text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
           {{ item.description }}
@@ -61,11 +60,11 @@
     </div>
 
     <div class="grid gap-6 lg:grid-cols-2">
-      <div class="card p-6">
+      <div class="card p-4 sm:p-6">
         <h3 class="mb-4 font-medium text-zinc-900 dark:text-zinc-50">Notes</h3>
         <WorkItemComments :work-item-id="item.id" :comments="workItems.comments" />
       </div>
-      <div class="card p-6">
+      <div class="card p-4 sm:p-6">
         <h3 class="mb-4 font-medium text-zinc-900 dark:text-zinc-50">Activity</h3>
         <ActivityTimeline :activities="workItems.activities" />
       </div>

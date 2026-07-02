@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card flex min-w-[280px] flex-1 flex-col overflow-hidden border-t-[3px] transition-all duration-200"
+    class="card flex min-w-[min(100%,260px)] flex-1 snap-start flex-col overflow-hidden border-t-[3px] transition-all duration-200 sm:min-w-[280px]"
     :class="[columnAccent(status), isDragOver ? 'ring-2 ring-brand-500/40 ring-offset-2 dark:ring-offset-zinc-950' : '']"
     @dragenter.prevent="setDragOver(true)"
     @dragleave.prevent="onDragLeave"

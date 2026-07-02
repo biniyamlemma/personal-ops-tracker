@@ -18,7 +18,7 @@
 
     <div
       v-if="open"
-      class="absolute right-0 top-full z-50 mt-2 w-80 rounded-lg border border-zinc-200 bg-white shadow-lg dark:border-zinc-800 dark:bg-zinc-900"
+      class="fixed inset-x-3 top-[4.25rem] z-50 max-h-[min(24rem,70dvh)] overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-lg sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80 dark:border-zinc-800 dark:bg-zinc-900"
     >
       <div class="flex items-center justify-between border-b border-zinc-100 px-4 py-3 dark:border-zinc-800">
         <p class="text-sm font-medium text-zinc-900 dark:text-zinc-50">Notifications</p>
@@ -30,7 +30,7 @@
           Mark all read
         </button>
       </div>
-      <div class="max-h-80 overflow-y-auto">
+      <div class="max-h-[min(18rem,55dvh)] overflow-y-auto sm:max-h-80">
         <button
           v-for="item in notifications.items"
           :key="item.id"

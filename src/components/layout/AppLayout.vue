@@ -1,15 +1,23 @@
 <template>
   <div class="app-shell flex h-screen overflow-hidden">
+    <div
+      v-if="sidebar.open"
+      class="fixed inset-0 z-30 bg-zinc-950/50 backdrop-blur-sm lg:hidden"
+      aria-hidden="true"
+      @click="sidebar.close()"
+    />
+
     <AppSidebar />
-    <div class="flex flex-1 flex-col overflow-hidden">
-      <div class="p-4 pb-0">
+
+    <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
+      <div class="shrink-0 p-3 pb-0 sm:p-4">
         <AppHeader :title="pageTitle" :subtitle="pageSubtitle">
           <template #actions>
             <slot name="header-actions" />
           </template>
         </AppHeader>
       </div>
-      <main class="flex-1 overflow-y-auto p-6">
+      <main class="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6">
         <RouterView />
       </main>
     </div>
@@ -17,17 +25,19 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSidebar from './AppSidebar.vue'
 import AppHeader from './AppHeader.vue'
 import { useDepartmentsStore } from '../../stores/departments'
 import { useWorkItemsStore } from '../../stores/workItems'
 import { useRealtime } from '../../composables/useRealtime'
+import { provideSidebar } from '../../composables/useSidebar'
 
 const route = useRoute()
 const departments = useDepartmentsStore()
 const workItems = useWorkItemsStore()
+const sidebar = provideSidebar()
 
 useRealtime()
 
@@ -37,6 +47,8 @@ onMounted(async () => {
     workItems.fetchWorkItems(),
   ])
 })
+
+watch(() => route.fullPath, () => sidebar.close())
 
 const pageTitle = computed(() => {
   if (route.name === 'dashboard') return 'Overview'

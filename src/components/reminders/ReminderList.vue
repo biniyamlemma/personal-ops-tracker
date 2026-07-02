@@ -3,7 +3,7 @@
     <div
       v-for="reminder in reminders.reminders"
       :key="reminder.id"
-      class="flex items-start justify-between gap-4 rounded-lg border border-zinc-200 px-4 py-3 dark:border-zinc-800"
+      class="flex flex-col gap-3 rounded-lg border border-zinc-200 px-4 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4 dark:border-zinc-800"
     >
       <div class="min-w-0 flex-1">
         <div class="flex flex-wrap items-center gap-2">
@@ -21,11 +21,11 @@
           </span>
         </div>
         <p v-if="reminder.message" class="mt-1 text-sm text-zinc-500">{{ reminder.message }}</p>
-        <p class="mt-1 text-xs text-zinc-400">
+        <p class="mt-1 break-all text-xs text-zinc-400 sm:break-normal">
           Next: {{ formatNextRun(reminder.next_run_at) }} · {{ reminder.email }}
         </p>
       </div>
-      <div class="flex shrink-0 gap-1">
+      <div class="flex flex-wrap gap-1 sm:shrink-0">
         <button
           class="rounded px-2 py-1 text-xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
           @click="emit('edit', reminder)"

@@ -12,14 +12,16 @@
 
     <template v-else>
       <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div class="rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-2.5 dark:border-zinc-800 dark:bg-zinc-900">
-          <p class="text-sm text-zinc-600 dark:text-zinc-400">
+        <div class="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm sm:px-4 dark:border-zinc-800 dark:bg-zinc-900">
+          <p class="text-zinc-600 dark:text-zinc-400">
             <span class="font-medium text-zinc-900 dark:text-zinc-200">Drag</span> cards between columns
-            <span class="mx-1 text-zinc-300 dark:text-zinc-600">·</span>
-            or use <span class="font-medium text-zinc-900 dark:text-zinc-200">Move to</span> on each card
+            <span class="mx-1 hidden text-zinc-300 sm:inline dark:text-zinc-600">·</span>
+            <span class="block sm:inline">
+              or use <span class="font-medium text-zinc-900 dark:text-zinc-200">Move to</span> on each card
+            </span>
           </p>
         </div>
-        <button class="btn-primary shrink-0" @click="showCreate = true">
+        <button class="btn-primary w-full shrink-0 sm:w-auto" @click="showCreate = true">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
@@ -27,7 +29,7 @@
         </button>
       </div>
 
-      <div class="flex gap-4 overflow-x-auto pb-4">
+      <div class="-mx-4 flex gap-3 overflow-x-auto px-4 pb-4 snap-x snap-mandatory sm:mx-0 sm:gap-4 sm:px-0">
         <BoardColumn
           v-for="status in STATUS_ORDER"
           :key="status"

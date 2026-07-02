@@ -20,7 +20,7 @@
         </select>
         <p v-if="recurrenceHint" class="mt-1 text-xs text-zinc-400">{{ recurrenceHint }}</p>
       </div>
-      <div class="grid grid-cols-2 gap-3">
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <label class="label">Reminder date</label>
           <input v-model="form.date" type="date" required class="input-field" />

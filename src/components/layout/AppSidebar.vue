@@ -1,14 +1,27 @@
 <template>
-  <aside class="sidebar flex w-64 shrink-0 flex-col">
-    <div class="px-6 py-6">
+  <aside
+    class="sidebar fixed inset-y-0 left-0 z-40 flex w-72 max-w-[min(18rem,88vw)] flex-col transition-transform duration-200 ease-out lg:relative lg:z-auto lg:w-64 lg:max-w-none lg:translate-x-0"
+    :class="sidebar.open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+  >
+    <div class="flex items-center justify-between px-4 py-5 sm:px-6 sm:py-6">
       <Logo size="md" :show-tagline="true" />
+      <button
+        class="btn-ghost !p-2 lg:hidden"
+        aria-label="Close menu"
+        @click="sidebar.close()"
+      >
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
 
-    <nav class="flex-1 overflow-y-auto px-4 py-2">
+    <nav class="flex-1 overflow-y-auto px-3 py-2 sm:px-4">
       <RouterLink
         :to="{ name: 'dashboard' }"
         class="mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium"
         :class="linkClass('dashboard')"
+        @click="sidebar.close()"
       >
         <span class="flex h-8 w-8 items-center justify-center rounded-md bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -22,6 +35,7 @@
         :to="{ name: 'reminders' }"
         class="mb-1 mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium"
         :class="linkClass('reminders')"
+        @click="sidebar.close()"
       >
         <span class="flex h-8 w-8 items-center justify-center rounded-md bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,7 +45,7 @@
         Reminders
       </RouterLink>
 
-      <p class="section-title mb-2 mt-8 px-3">Areas</p>
+      <p class="section-title mb-2 mt-6 px-3 sm:mt-8">Areas</p>
 
       <RouterLink
         v-for="dept in departments.departments"
@@ -39,6 +53,7 @@
         :to="{ name: 'board', params: { departmentId: dept.id } }"
         class="mb-0.5 flex items-center justify-between rounded-lg px-3 py-2 text-sm"
         :class="linkClass('board', dept.id)"
+        @click="sidebar.close()"
       >
         <span class="font-medium">{{ dept.name }}</span>
         <span
@@ -50,11 +65,12 @@
       </RouterLink>
     </nav>
 
-    <div class="border-t border-zinc-200 p-4 dark:border-zinc-800">
+    <div class="border-t border-zinc-200 p-3 sm:p-4 dark:border-zinc-800">
       <RouterLink
         :to="{ name: 'settings' }"
         class="mb-2 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium"
         :class="linkClass('settings')"
+        @click="sidebar.close()"
       >
         <svg class="h-5 w-5 shrink-0 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9.594 3.94c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -79,6 +95,7 @@ import { useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import { useDepartmentsStore } from '../../stores/departments'
 import { useWorkItemsStore } from '../../stores/workItems'
+import { useSidebar } from '../../composables/useSidebar'
 import Avatar from '../common/Avatar.vue'
 import Logo from '../common/Logo.vue'
 
@@ -86,6 +103,7 @@ const route = useRoute()
 const auth = useAuthStore()
 const departments = useDepartmentsStore()
 const workItems = useWorkItemsStore()
+const sidebar = useSidebar()
 
 function activeCount(departmentId) {
   return workItems.activeByDepartment(departmentId).length
